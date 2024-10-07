@@ -29,7 +29,6 @@
        .result {
            margin-top: 20px;
        }
-
    </style>
 </head>
 
@@ -55,36 +54,7 @@
        <div class="result" id="result"></div>
    </div>
 
-   <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close"><button id="ok">OK</button></span>
-            <p id="modal-text">Title cannot exceed 50 characters.</p>
-        </div>
-   </div>
-
    <script>
-        //show modal
-        function showModal(message){
-            const modal = document.getElementById("myModal");
-            const modalText = document.getElementById("modal-text");
-            modalText.textContent = message;
-            modal.style.display = "block";
-        }
-
-        function closeModal(){
-            const modal = document.getElementById("myModal");
-            modal.style.display = "none";
-        }
-
-        document.querySelector(".close").addEventListener("click",closeModal);
-
-        document.getElementById("title").addEventListener("input",function(){
-            if(this.value.length>50){
-                showModal("Title cannot exceed 50 characters.");
-                this.value = this.value.substring(0,50);
-            }
-        });
-
        document.getElementById("userForm").addEventListener("submit", function (event) {
            event.preventDefault();
 
@@ -102,22 +72,27 @@
        });
 
        document.getElementById("title").addEventListener("focus", function () {
-            this.style.backgroundColor = "#e0f7fa";  // Light blue background on focus
-        });
+           this.style.backgroundColor = "#e0f7fa";  // Light blue background on focus
+       });
 
-        document.getElementById("title").addEventListener("blur", function () {
-            this.style.backgroundColor = "";  // Reset background on blur
-        });
+       document.getElementById("title").addEventListener("blur", function () {
+           this.style.backgroundColor = "";  // Reset background on blur
+       });
 
-        document.getElementById("content").addEventListener("focus", function () {
-            this.style.backgroundColor = "#e0f7fa";  // Light blue background on focus
-        });
+       document.getElementById("content").addEventListener("focus", function () {
+           this.style.backgroundColor = "#e0f7fa";  // Light blue background on focus
+       });
 
-        document.getElementById("content").addEventListener("blur", function () {
-            this.style.backgroundColor = "";  // Reset background on blur
-        });
+       document.getElementById("content").addEventListener("blur", function () {
+           this.style.backgroundColor = "";  // Reset background on blur
+       });
+
+       document.getElementById("title").addEventListener("input", function () {
+            if(this.value.length>50){
+                alert("Title can't exceed 50 characters.");
+            }
+       });
    </script>
-   
 </body>
 
 </html>
