@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Label, Note } from "./types";
 import { dummyNotesList } from "./constants"; 
+import { ClickCounter} from "./hooksExercise";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
          </div>
        ))}
      </div>
+     <ClickCounter/>
    </div>
   );
 }
