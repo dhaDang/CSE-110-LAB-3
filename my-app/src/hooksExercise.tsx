@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ThemeContext, themes } from "./themeContext";
 
-function ToggleTheme() {
+export function ToggleTheme() {
     const [currentTheme, setCurrentTheme] = useState(themes.light);
    
     const toggleTheme = () => {
