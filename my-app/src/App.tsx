@@ -60,14 +60,19 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => { /*funct
 
   /*list of favorite titles*/
   const favoriteNoteTitles = notes.filter(note => note.isFavorite).map(note=>note.title);
-  
+  const [titleBackgroundColor, setTitleBackgroundColor] = useState<string>('');
+  const [contentBackgroundColor, setContentBackgroundColor] = useState<string>('');
   return (
     <div className='app-container'>
       {/*creation note area*/}
       <form className="note-form" onSubmit={createNoteHandler}>
     	<div>
       	<input
+          id="title"
         	placeholder="Note Title"
+          style={{backgroundColor: titleBackgroundColor}}
+          onFocus={() => setTitleBackgroundColor('#e0f7fa')}
+          onBlur={() => setTitleBackgroundColor('')}
           value={newNote.title}
         	onChange={(event) =>
           	setNewNote({...newNote, title: event.target.value})}
@@ -78,7 +83,11 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => { /*funct
     	<div>
         {/*note content creation*/}
       	<textarea
+          id = "content"
         	placeholder='Note Content'
+          style = {{backgroundColor: contentBackgroundColor}}
+          onFocus={() => setContentBackgroundColor("#e0f7fa")}
+          onBlur={() => setContentBackgroundColor('')}
           value = {newNote.content}
           onChange={(event) => setNewNote({...newNote, content: event.target.value})}
       	/>
