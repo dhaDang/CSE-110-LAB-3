@@ -8,6 +8,40 @@ import { ClickCounter} from "./hooksExercise";
 function App() {
   const [notes,setNotes]=useState<Note[]>(dummyNotesList);
 
+  const [newNote, setNewNote] = useState<Note>({
+    id: -1,
+    title: "",
+    content: "",
+    label: Label.other,
+    isFavorite: false,
+  });
+
+  const [selectedLabel, setSelectedLabel] = useState<Label>(Label.other);
+  // const initialNote = {
+  //   id: -1,
+  //   title: "",
+  //   content: "",
+  //   label: Label.other,
+  // };
+
+//  const [createNote, setCreateNote] = useState(initialNote);
+
+const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  const newId = notes.length>0 ? Math.max(...notes.map(note => note.id))+1:1;
+
+  setNotes([...notes, { ...newNote, id:newId, label: selectedLabel }]);
+  
+  setNewNote({
+    id: -1,
+    title: "",
+    content: "",
+    label: Label.other,
+    isFavorite: false,
+  });
+  setSelectedLabel(Label.other);
+};
+
   const toggleFavorite = (id: number) => {
     setNotes(
       notes.map(note=>note.id === id ? {...note,isFavorite:!note.isFavorite} :note
@@ -19,21 +53,40 @@ function App() {
   
   return (
     <div className='app-container'>
-      <form className="note-form">
-       <div><input placeholder="Note Title"></input></div>
+      <form className="note-form" onSubmit={createNoteHandler}>
+    	<div>
+      	<input
+        	placeholder="Note Title"
+        	onChange={(event) =>
+          	setNewNote({...newNote, title: event.target.value})}
+        	required>
+      	</input>
+    	</div>
 
-       <div><textarea placeholder="Note Content"></textarea></div>
-        <div>
-          <select>
-            <option>Other</option>
-            <option>Work</option>
-            <option>Study</option>
-            <option>Personal</option>
-          </select>
-        </div>
-       <div><button type="submit">Create Note</button></div>
-      </form>
+    	<div>
+      	<textarea
+        	placeholder='Note Content'
+          value = {newNote.content}
+          onChange={(event) => setNewNote({...newNote, content: event.target.value})}
+      	/>
+    	</div>
 
+  <div>
+     	<select
+       	value={selectedLabel}
+        onChange={(event) => setSelectedLabel(event.target.value as Label)}
+       	required>
+       	<option value={Label.personal}>Personal</option>
+       	<option value={Label.study}>Study</option>
+       	<option value={Label.work}>Work</option>
+       	<option value={Label.other}>Other</option>
+     	</select>
+   	</div>
+
+    	<div><button type="submit">Create Note</button></div>
+  	</form>
+
+      //favoriting tool
       <div className="notes-grid">
        {notes.map((note) => (
          <div
