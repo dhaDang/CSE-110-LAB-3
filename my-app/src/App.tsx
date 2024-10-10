@@ -3,7 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import { Label, Note } from "./types";
 import { dummyNotesList } from "./constants"; 
-import { ClickCounter} from "./hooksExercise";
+import ToggleTheme, { ClickCounter} from "./hooksExercise";
+
 
 function App() {
   const [notes,setNotes]=useState<Note[]>(dummyNotesList);
@@ -59,6 +60,10 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
     setSelectedNote(note);
   }
 
+  const deleteNote = (id: number) => {
+    setNotes(notes.filter(note=> note.id !==id));
+  };
+
   const favoriteNoteTitles = notes.filter(note => note.isFavorite).map(note=>note.title);
   
   return (
@@ -96,8 +101,6 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
 
     	<div><button type="submit">Create Note</button></div>
   	</form>
-
-      //favoriting tool
       <div className="notes-grid">
        {notes.map((note) => (
          <div
@@ -113,7 +116,15 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
                   {note.isFavorite ? '♥' : '♡'}
                 </span>
               </button>
-             <button>x</button>
+             <button
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteNote(note.id);
+              }}
+                style = {{cursor:'pointer', border:'none', background:'transparent'}}
+                >
+                  x
+                  </button>
              
             </div>
 
@@ -141,7 +152,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
          </div>
        ))}
      </div>
-     
+
      <div className='favorites-list' style={{position:'absolute', bottom: '20px', left: '20px'}}>
       <h4>List of favorites:</h4>
         <ul>
@@ -150,7 +161,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
           ) : (<p>No favorite notes.</p>)}
         </ul>
      </div>
-     <ClickCounter/>
+     <ToggleTheme/>
    </div>
   );
 }
