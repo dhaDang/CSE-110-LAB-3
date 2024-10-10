@@ -24,7 +24,7 @@ function App() {
   //   label: Label.other,
   // };
 
-//  const [createNote, setCreateNote] = useState(initialNote);
+  const [selectedNote, setSelectedNote] = useState<Note|null>(null);
 
 const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
@@ -49,6 +49,16 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
     );
   };
 
+  const handleNoteEdit = (id:number, field: keyof Note, value: string) => {
+    setNotes(
+      notes.map(note => note.id == id ? { ...note, [field]: value}: note)
+    );
+  };
+
+  const selectNoteForEditing = (note:Note) => {
+    setSelectedNote(note);
+  }
+
   const favoriteNoteTitles = notes.filter(note => note.isFavorite).map(note=>note.title);
   
   return (
@@ -57,6 +67,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
     	<div>
       	<input
         	placeholder="Note Title"
+          value={newNote.title}
         	onChange={(event) =>
           	setNewNote({...newNote, title: event.target.value})}
         	required>
@@ -91,7 +102,10 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
        {notes.map((note) => (
          <div
            key={note.id}
-           className="note-item">
+           className="note-item"
+            style = {{border: "1px solid #ddd", borderRadius: "8px", padding: "10px"}}
+            onClick = {() => selectNoteForEditing(note)}
+            >
            <div className="notes-header">
             <button onClick={() => toggleFavorite(note.id)}
               style={{cursor: 'pointer', border:'none',background:'transparent'}}>
@@ -102,12 +116,32 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
              <button>x</button>
              
             </div>
-            <h2>{note.title}</h2>
-           <p> {note.content} </p>
-           <p> {note.label} </p>
+
+            <h2
+              contentEditable 
+              suppressContentEditableWarning
+              onBlur = {(e) => handleNoteEdit(note.id, 'title', e.currentTarget.textContent || '')}
+              style={{cursor:'text'}}
+              >
+                {note.title}
+              </h2>
+           <p
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => handleNoteEdit(note.id, 'content', e.currentTarget.textContent || '')}
+            > 
+              {note.content}
+            </p>
+           <p
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => handleNoteEdit(note.id, 'label', e.currentTarget.textContent || '')} style = {{cursor:'text'}}> 
+              {note.label} 
+            </p>
          </div>
        ))}
      </div>
+     
      <div className='favorites-list' style={{position:'absolute', bottom: '20px', left: '20px'}}>
       <h4>List of favorites:</h4>
         <ul>
