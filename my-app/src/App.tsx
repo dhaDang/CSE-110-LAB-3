@@ -1,73 +1,69 @@
 import React, {useState} from 'react';
 import logo from './logo.svg';
-import './App.css';
-import { Label, Note } from "./types";
-import { dummyNotesList } from "./constants"; 
-import ToggleTheme, { ClickCounter} from "./hooksExercise";
+import './App.css'; /*import css file*/
+import { Label, Note } from "./types"; /*import custom types for note and label*/
+import { dummyNotesList } from "./constants"; /*import dummy data*/
+import ToggleTheme, { ClickCounter} from "./hooksExercise"; /*import toggle theme and clickcounter compoenets*/
 
 
 function App() {
-  const [notes,setNotes]=useState<Note[]>(dummyNotesList);
+  const [notes,setNotes]=useState<Note[]>(dummyNotesList); /*state to store notes*/
 
-  const [newNote, setNewNote] = useState<Note>({
-    id: -1,
-    title: "",
+  const [newNote, setNewNote] = useState<Note>({ /*state for storing new note data*/
+    id: -1, /*temp id*/
+    title: "", /*set default title*/
     content: "",
     label: Label.other,
     isFavorite: false,
   });
 
-  const [selectedLabel, setSelectedLabel] = useState<Label>(Label.other);
-  // const initialNote = {
-  //   id: -1,
-  //   title: "",
-  //   content: "",
-  //   label: Label.other,
-  // };
+  const [selectedLabel, setSelectedLabel] = useState<Label>(Label.other); /*keep track of selected label in drop down*/
 
-  const [selectedNote, setSelectedNote] = useState<Note|null>(null);
+  const [selectedNote, setSelectedNote] = useState<Note|null>(null); /*keep track of note being editted*/
 
-const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-  const newId = notes.length>0 ? Math.max(...notes.map(note => note.id))+1:1;
+const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => { /*function to create new notes*/
+  event.preventDefault(); /*prevent default form submission*/
+  const newId = notes.length>0 ? Math.max(...notes.map(note => note.id))+1:1; /*generate new id based on length of existing ids*/
 
-  setNotes([...notes, { ...newNote, id:newId, label: selectedLabel }]);
+  setNotes([...notes, { ...newNote, id:newId, label: selectedLabel }]); /*add new note to note list*/
   
-  setNewNote({
+  setNewNote({ /*reset for m fields to default after note creation */
     id: -1,
     title: "",
     content: "",
     label: Label.other,
     isFavorite: false,
   });
-  setSelectedLabel(Label.other);
+  setSelectedLabel(Label.other); /*reset label to other*/
 };
 
-  const toggleFavorite = (id: number) => {
+  const toggleFavorite = (id: number) => { /*favorite toggle functino*/
     setNotes(
       notes.map(note=>note.id === id ? {...note,isFavorite:!note.isFavorite} :note
       )
     );
   };
 
-  const handleNoteEdit = (id:number, field: keyof Note, value: string) => {
+  const handleNoteEdit = (id:number, field: keyof Note, value: string) => {/*function to edit note*/
     setNotes(
       notes.map(note => note.id == id ? { ...note, [field]: value}: note)
     );
   };
 
-  const selectNoteForEditing = (note:Note) => {
+  const selectNoteForEditing = (note:Note) => { /*function to select*/
     setSelectedNote(note);
   }
 
-  const deleteNote = (id: number) => {
+  const deleteNote = (id: number) => { /*function to delete*/
     setNotes(notes.filter(note=> note.id !==id));
   };
 
+  /*list of favorite titles*/
   const favoriteNoteTitles = notes.filter(note => note.isFavorite).map(note=>note.title);
   
   return (
     <div className='app-container'>
+      {/*creation note area*/}
       <form className="note-form" onSubmit={createNoteHandler}>
     	<div>
       	<input
@@ -80,6 +76,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
     	</div>
 
     	<div>
+        {/*note content creation*/}
       	<textarea
         	placeholder='Note Content'
           value = {newNote.content}
@@ -88,6 +85,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
     	</div>
 
   <div>
+    {/*selecting note when creating notee*/}
      	<select
        	value={selectedLabel}
         onChange={(event) => setSelectedLabel(event.target.value as Label)}
@@ -98,7 +96,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
        	<option value={Label.other}>Other</option>
      	</select>
    	</div>
-
+    {/*SUbmission for new note creation*/}        
     	<div><button type="submit">Create Note</button></div>
   	</form>
       <div className="notes-grid">
@@ -110,12 +108,14 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
             onClick = {() => selectNoteForEditing(note)}
             >
            <div className="notes-header">
+            {/*for each note have a heart for the favorites*/}
             <button onClick={() => toggleFavorite(note.id)}
               style={{cursor: 'pointer', border:'none',background:'transparent'}}>
                 <span style = {{color: note.isFavorite ? 'red' : 'gray'}}>
                   {note.isFavorite ? '♥' : '♡'}
                 </span>
               </button>
+              {/*button to delete note*/}
              <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -127,7 +127,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
                   </button>
              
             </div>
-
+            {/*handle note editingg - title, content, type*/}
             <h2
               contentEditable 
               suppressContentEditableWarning
@@ -152,7 +152,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
          </div>
        ))}
      </div>
-
+       {/*display the favorites list of notes*/}
      <div className='favorites-list' style={{position:'absolute', bottom: '20px', left: '20px'}}>
       <h4>List of favorites:</h4>
         <ul>
@@ -161,6 +161,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => {
           ) : (<p>No favorite notes.</p>)}
         </ul>
      </div>
+     {/*changes light/dark mode*/}
      <ToggleTheme/>
    </div>
   );
