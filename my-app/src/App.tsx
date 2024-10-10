@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import logo from './logo.svg';
 import './App.css'; /*import css file*/
 import { Label, Note } from "./types"; /*import custom types for note and label*/
 import { dummyNotesList } from "./constants"; /*import dummy data*/
-import ToggleTheme, { ClickCounter} from "./hooksExercise"; /*import toggle theme and clickcounter compoenets*/
+import {ThemeContext, themes} from "./themeContext";
 
 
-function App() {
+export function App() {
   const [notes,setNotes]=useState<Note[]>(dummyNotesList); /*state to store notes*/
 
   const [newNote, setNewNote] = useState<Note>({ /*state for storing new note data*/
@@ -62,8 +62,10 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => { /*funct
   const favoriteNoteTitles = notes.filter(note => note.isFavorite).map(note=>note.title);
   const [titleBackgroundColor, setTitleBackgroundColor] = useState<string>('');
   const [contentBackgroundColor, setContentBackgroundColor] = useState<string>('');
+  const theme = useContext(ThemeContext);
   return (
-    <div className='app-container'>
+    <div className='app-container'
+    style={{background: theme.background, color: theme.foreground, padding:"20px"}}>
       {/*creation note area*/}
       <form className="note-form" onSubmit={createNoteHandler}>
     	<div>
@@ -113,13 +115,13 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => { /*funct
          <div
            key={note.id}
            className="note-item"
-            style = {{border: "1px solid #ddd", borderRadius: "8px", padding: "10px"}}
+            style = {{border: "1px solid #ddd", borderRadius: "8px", padding: "10px", background: theme.background, color: theme.foreground}}
             onClick = {() => selectNoteForEditing(note)}
             >
            <div className="notes-header">
             {/*for each note have a heart for the favorites*/}
             <button onClick={() => toggleFavorite(note.id)}
-              style={{cursor: 'pointer', border:'none',background:'transparent'}}>
+              style={{cursor: 'pointer', border:'none', background: theme.background, color: theme.foreground}}>
                 <span style = {{color: note.isFavorite ? 'red' : 'gray'}}>
                   {note.isFavorite ? '♥' : '♡'}
                 </span>
@@ -130,7 +132,7 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => { /*funct
                 e.stopPropagation();
                 deleteNote(note.id);
               }}
-                style = {{cursor:'pointer', border:'none', background:'transparent'}}
+                style = {{cursor:'pointer', border:'none', background: theme.background, color: theme.foreground}}
                 >
                   x
                   </button>
@@ -170,10 +172,25 @@ const createNoteHandler = (event: React.FormEvent<HTMLFormElement>) => { /*funct
           ) : (<p>No favorite notes.</p>)}
         </ul>
      </div>
-     {/*changes light/dark mode*/}
-     <ToggleTheme/>
    </div>
   );
 }
-
-export default App;
+export function ToggleTheme() {
+  //manages the current theme -> uses light as default 
+  const [currentTheme, setCurrentTheme] = useState(themes.light);
+ 
+  const toggleTheme = () => {
+    //switches between light and dark mode 
+    setCurrentTheme(currentTheme === themes.light ? themes.dark : themes.light);
+  };
+ 
+  return (
+    //changes children to current theme 
+    <ThemeContext.Provider value={currentTheme}>
+      <App/>
+      <button onClick={toggleTheme}> Toggle Theme:D </button>
+    </ThemeContext.Provider>
+  );
+ }
+ 
+ export default ToggleTheme;
