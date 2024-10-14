@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext} from 'react';
 import { ThemeContext, themes } from "./themeContext";
-import App from './App';
+import StickyNotes from './stickyNotes';
 
 //function to change light and dark modes
 export function ToggleTheme() {
