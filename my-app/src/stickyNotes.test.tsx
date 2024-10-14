@@ -62,12 +62,3 @@ describe("required sticky note", () => {
   });
 });
 
-describe("Required Todo List", () => {
-    test("read, all items are displayed on screen", () => {
-     
-    });
-  
-    test("number of checked items are the same as the title", () => {
-      
-    });
-  });
