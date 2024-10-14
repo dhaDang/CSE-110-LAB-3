@@ -1,4 +1,5 @@
 import React, {useContext, useState} from 'react';
+import logo from './logo.svg';
 import './App.css'; /*import css file*/
 import { Label, Note } from "./types"; /*import custom types for note and label*/
 import { dummyNotesList } from "./constants"; /*import dummy data*/
