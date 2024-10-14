@@ -1,5 +1,10 @@
 import { Label, Note } from "./types"; 
 
+export const dummyGroceryList = [
+    { name: "Apples", isPurchased: false },
+    { name: "Bananas", isPurchased: false },
+ ]
+ 
 //test of dummy notes list 
 //used as a default when we were implementing 
 //default list of notes when website is opened
