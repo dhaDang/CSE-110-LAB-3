@@ -15,6 +15,11 @@ describe("Required Todo List", () => {
     render(<ToDoList/>)
 
     const itemsBought = screen.getByText(/Items bought:/);
-    expect(itemsBought).toHaveTextContent("Item bought");
+    expect(itemsBought).toHaveTextContent("Item bought: 0");
+    const checkboxes = screen.getAllByRole('checkbox');
+    fireEvent.click(checkboxes[0]);
+    expect(itemsBought).toHaveTextContent("Items bought: 1");
+    fireEvent.click(checkboxes[0]);
+    expect(itemsBought).toHaveTextContent("Items bought: 0");
   });
 });
