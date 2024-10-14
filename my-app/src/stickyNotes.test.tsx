@@ -26,9 +26,26 @@ describe("Create StickyNote", () => {
    
       const newNoteTitle = screen.getByText("New Note");
       const newNoteContent = screen.getByText("Note content");
-   
+      
       expect(newNoteTitle).toBeInTheDocument();
       expect(newNoteContent).toBeInTheDocument();
     });
+   });
+
+   describe("required sticky note", () => {
+    test("read, all notes are displayed on page", () => {
+      render(<StickyNotes/>)
+
+
+    });
+   
+    test("update, once update is done document object value updates", () => {
+      
+    });
+
+    test("delete, note is filtered out once X is pressed", () => {
+      
+    });
+
    });
    
