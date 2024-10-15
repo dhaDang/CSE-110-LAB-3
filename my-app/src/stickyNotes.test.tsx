@@ -60,5 +60,19 @@ describe("required sticky note", () => {
     fireEvent.click(deleteButton);
     expect(noteTitle).not.toBeInTheDocument();
   });
+
+  test("Toggle Favorite Status", () => {
+    render(<StickyNotes />);
+    
+  });
+
+  test("Does not notes without titles", () => {
+    render(<StickyNotes />);
+  });
+
+  test("", () => {
+    render(<StickyNotes />);
+  });
+
 });
 
