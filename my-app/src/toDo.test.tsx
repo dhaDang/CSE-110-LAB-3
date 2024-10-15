@@ -38,6 +38,22 @@ describe("Required Todo List", () => {
     expect(itemsBought).toHaveTextContent("Items bought: 0");
   });
 
+  test("checking multiple items updates count", () => {
+    render(<ToDoList />);
+
+    const itemsBought = screen.getByText(/Items bought:/);
+    const checkboxes = screen.getAllByRole('checkbox');
+    fireEvent.click(checkboxes[0]);
+    expect("Item bought: 1").toBeInTheDocument;
+    fireEvent.click(checkboxes[1]);
+    expect("Item bought: 2").toBeInTheDocument;
+  });
+
+  test("unchecking item decreases count", () => {
+    render(<ToDoList />);
+
+  });
+
 });
 
 // expect(noteTitle).not.toBeInTheDocument();
