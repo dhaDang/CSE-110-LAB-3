@@ -54,6 +54,13 @@ describe("Required Todo List", () => {
     expect("Item bought: 0").toBeInTheDocument;
   });
 
+  test("Check to see if all boxes are unchecked intially", () => {
+    render(<ToDoList />);
+    const checkboxes = screen.getAllByRole('checkbox');
+    checkboxes.forEach((checkbox)=>{
+      expect(checkbox).not.toBeChecked();
+    })
+  });
+
 });
 
-// expect(noteTitle).not.toBeInTheDocument();
