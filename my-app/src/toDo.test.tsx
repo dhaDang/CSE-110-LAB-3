@@ -51,7 +51,15 @@ describe("Required Todo List", () => {
 
   test("unchecking item decreases count", () => {
     render(<ToDoList />);
-
+    const itemsBought = screen.getByText(/Items bought:/);
+    const checkboxes = screen.getAllByRole('checkbox');
+    fireEvent.click(checkboxes[0]);
+    fireEvent.click(checkboxes[1]);
+    expect("Item bought: 2").toBeInTheDocument;
+    fireEvent.click(checkboxes[0]);
+    expect("Item bought: 1").toBeInTheDocument;
+    fireEvent.click(checkboxes[1]);
+    expect("Item bought: 0").toBeInTheDocument;
   });
 
 });
