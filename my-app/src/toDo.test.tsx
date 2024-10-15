@@ -54,13 +54,17 @@ describe("Required Todo List", () => {
     expect("Item bought: 0").toBeInTheDocument;
   });
 
-  test("Check to see if all boxes are unchecked intially", () => {
-    render(<ToDoList />);
+  test("unchecking and checking multiple times", () => {
+    render(<ToDoList/>);
     const checkboxes = screen.getAllByRole('checkbox');
-    checkboxes.forEach((checkbox)=>{
-      expect(checkbox).not.toBeChecked();
-    })
+    fireEvent.click(checkboxes[0]);
+    fireEvent.click(checkboxes[0]);
+    expect("Item bought: 0").toBeInTheDocument;
+    fireEvent.click(checkboxes[0]);
+    fireEvent.click(checkboxes[1]);
+    expect("Item bought: 2").toBeInTheDocument;
+    fireEvent.click(checkboxes[0]);
+    expect("Item bought: 1").toBeInTheDocument;
   });
-
 });
 

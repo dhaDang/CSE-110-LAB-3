@@ -72,12 +72,28 @@ describe("required sticky note", () => {
     expect(favoriteButton.textContent).toBe("♡");
   });
 
-  test("Does not notes without titles", () => {
+  test("Does not allow notes without titles", () => {
     render(<StickyNotes />);
+    const createNoteContent = screen.getByPlaceholderText("Note Content");
+    const createNoteButton = screen.getByText("Create Note");
+    fireEvent.change(createNoteContent, {target: {value: "Creating note without title"}});
+    fireEvent.click(createNoteButton);
+    const noteContent = screen.queryByText("Creating note wihtout a title")
+    expect(noteContent).not.toBeInTheDocument();
   });
 
-  test("", () => {
+  test("Creation of sticky note", () => {
     render(<StickyNotes />);
+    const createNoteTitle = screen.getByPlaceholderText("Note Title");
+    const createNoteContent = screen.getByPlaceholderText("Note Content");
+    const createNoteButton = screen.getByText("Create Note");
+    fireEvent.change(createNoteTitle, {target: {value: "New note title"}});
+    fireEvent.change(createNoteContent, {target: {value: "New note content"}});
+    fireEvent.click(createNoteButton);
+    const newTitleContent = screen.queryByText("New note title");
+    const newContent = screen.queryByText("New note content");
+    expect(newTitleContent).toBeInTheDocument();
+    expect(newContent).toBeInTheDocument();
   });
 
 });
