@@ -63,7 +63,13 @@ describe("required sticky note", () => {
 
   test("Toggle Favorite Status", () => {
     render(<StickyNotes />);
-    
+    const favoriteButton = screen.getAllByText("♡")[1];
+    expect(favoriteButton).toBeInTheDocument();
+    expect(favoriteButton.textContent).toBe("♡");
+    fireEvent.click(favoriteButton);
+    expect(favoriteButton.textContent).toBe("♥");
+    fireEvent.click(favoriteButton);
+    expect(favoriteButton.textContent).toBe("♡");
   });
 
   test("Does not notes without titles", () => {
