@@ -30,6 +30,14 @@ describe("Required Todo List", () => {
     // fireEvent.click(checkboxes[0]);
     // expect(itemsBought).toHaveTextContent("Items bought: 0");
   });
+
+  test("initial state of items bought is 0", () => {
+    render(<ToDoList />);
+
+    const itemsBought = screen.getByText(/Items bought:/);
+    expect(itemsBought).toHaveTextContent("Items bought: 0");
+  });
+
 });
 
 // expect(noteTitle).not.toBeInTheDocument();
