@@ -72,7 +72,7 @@ describe("required sticky note", () => {
     expect(favoriteButton.textContent).toBe("♡");
   });
 
-  test("Does not allow notes without titles", () => {
+  test("Does not create notes without titles", () => {
     render(<StickyNotes />);
     const createNoteContent = screen.getByPlaceholderText("Note Content");
     const createNoteButton = screen.getByText("Create Note");
